@@ -5,6 +5,6 @@ let () =
     match list with
     | [] -> ()
     | head :: tail ->
-      print_endline ((toString head) ^ " -> " ^ (toStringVerbose head));
+      print_endline ((Color.toString head) ^ " -> " ^ (Color.toStringVerbose head));
       test tail
-  in test all 
+  in test Color.all
