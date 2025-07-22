@@ -1,5 +1,3 @@
-#use "Card.ml"
-
 let () =
   print_endline "=== Color Module ===";
   let rec test_colors list =
