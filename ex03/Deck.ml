@@ -146,3 +146,40 @@ module Card = struct
   let isDiamond card = isOf card Diamond
   let isClub card = isOf card Club
 end
+
+type t = Card.t list
+
+let newDeck () = 
+  let rec aux card_list deck count =
+    match card_list with
+    | [] -> deck
+    | _ -> 
+      let target_index = Random.int count in
+      let rec remove_at lst idx target new_lst result_deck =
+        match lst with
+        | [] -> (new_lst, result_deck)
+        | head :: tail ->
+          if idx = target then
+            (tail @ new_lst, head :: result_deck)
+          else
+            remove_at tail (idx + 1) target (head :: new_lst) result_deck
+      in let (new_card_list, new_deck) = remove_at card_list 0 target_index [] deck
+      in aux new_card_list new_deck (count - 1)
+  in aux Card.all [] (List.length Card.all)
+
+let rec toStringList deck =
+  match deck with
+  | [] -> []
+  | head :: tail ->
+    Card.toString head :: toStringList tail 
+
+let rec toStringListVerbose deck =
+  match deck with
+  | [] -> []
+  | head :: tail ->
+    Card.toStringVerbose head :: toStringListVerbose tail 
+
+let drawCard deck = 
+  match deck with
+  | [] -> raise (Failure "Deck is empty")
+  | head :: tail -> (head, tail)

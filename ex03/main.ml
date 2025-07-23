@@ -141,3 +141,70 @@ let () =
   print_string ("  all: ");
   print_int (List.length Deck.Card.all);
   print_endline " total cards";
+
+  print_endline "----------------------------------------------------";
+  print_endline "=== Deck Module ===";
+  print_endline "newDeck:";
+  let deck1 = Deck.newDeck () in
+  let deck2 = Deck.newDeck () in
+  print_string ("  Deck 1 size: ");
+  print_int (List.length (Deck.toStringList deck1));
+  print_endline " cards";
+  print_string ("  Deck 2 size: ");
+  print_int (List.length (Deck.toStringList deck2));
+  print_endline " cards";
+  print_endline ("  All cards of Deck 1: ");
+  let rec print_all_cards list =
+    match list with
+    | [] -> ()
+    | head :: tail -> 
+      print_string ("    " ^ head ^ " ");
+      print_all_cards tail
+  in 
+  print_all_cards (Deck.toStringList deck1);
+  print_endline "";
+  print_endline ("  All cards of Deck 2: ");
+  print_all_cards (Deck.toStringList deck2);
+  print_endline "";
+  print_endline "----------------------------------------------------";
+  print_endline "toStringList vs toStringListVerbose:";
+  let small_deck = Deck.newDeck () in
+  let string_list = Deck.toStringList small_deck in
+  let verbose_list = Deck.toStringListVerbose small_deck in
+  print_endline ("  All cards (short format): ");
+  print_all_cards string_list;
+  print_endline "";
+  print_endline ("  All cards (verbose format): ");
+  let rec print_all_cards_verbose list =
+    match list with
+    | [] -> ()
+    | head :: tail -> 
+      print_endline ("    " ^ head);
+      print_all_cards_verbose tail
+  in 
+  print_all_cards_verbose verbose_list;
+  print_endline "----------------------------------------------------";
+  print_endline "drawCard:";
+  let test_deck = Deck.newDeck () in
+  let (first_card, remaining_deck) = Deck.drawCard test_deck in
+  print_endline ("  Drew card: " ^ (Deck.Card.toString first_card));
+  print_string ("  Remaining deck size: ");
+  print_int (List.length (Deck.toStringList remaining_deck));
+  print_endline " cards";
+  let (second_card, remaining_deck2) = Deck.drawCard remaining_deck in
+  print_endline ("  Drew another card: " ^ (Deck.Card.toString second_card));
+  print_string ("  Remaining deck size: ");
+  print_int (List.length (Deck.toStringList remaining_deck2));
+  print_endline " cards";
+  print_endline "----------------------------------------------------";
+  print_endline "drawCard from empty deck:";
+  let test_deck = Deck.newDeck () in
+  let rec empty_the_deck deck =
+    try
+      let (_, remaining) = Deck.drawCard deck in
+      empty_the_deck remaining
+    with
+    | Failure msg ->
+      print_endline ("  Caught Failure: " ^ msg);
+  in
+  let empty_deck = empty_the_deck test_deck
