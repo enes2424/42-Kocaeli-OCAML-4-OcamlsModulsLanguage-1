@@ -206,5 +206,4 @@ let () =
     with
     | Failure msg ->
       print_endline ("  Caught Failure: " ^ msg);
-  in
-  let empty_deck = empty_the_deck test_deck
+  in empty_the_deck test_deck
